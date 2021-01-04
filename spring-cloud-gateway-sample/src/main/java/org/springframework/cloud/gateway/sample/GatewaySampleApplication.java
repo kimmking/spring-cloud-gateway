@@ -19,6 +19,8 @@ package org.springframework.cloud.gateway.sample;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.cloud.gateway.config.conditional.ConditionalOnEnabledFilter;
+import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,10 +33,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerResponse;
 
 /**
  * @author Spencer Gibb
@@ -51,6 +49,12 @@ public class GatewaySampleApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GatewaySampleApplication.class, args);
+	}
+
+	@Bean
+	public RouteLocator getRouteLocator(RouteLocatorBuilder builder) {
+		return builder.routes().route(r -> r.path("/t/**")
+				.filters(f -> f.stripPrefix(1).filter(new TimeGatewayFilter())).uri(uri)).build();
 	}
 
 	@Bean
@@ -164,6 +168,22 @@ public class GatewaySampleApplication {
 	}
 
 	@Bean
+	public RouterFunction<ServerResponse> timeRouterFunction() {
+		RouterFunction<ServerResponse> route = RouterFunctions.route(
+				RequestPredicates.path("/time"),
+				request -> {
+					System.out.println("2=》"+request.uri());
+					return ServerResponse.ok().body(BodyInserters.fromValue("time"));
+				});
+		return route.filter((request, next) -> {
+				System.out.println("1=》"+request.uri());
+				Mono<ServerResponse> response = next == null ? null : next.handle(request);
+				System.out.println("3=》"+request.uri());
+				return response;
+			});
+	}
+
+	@Bean
 	public RouterFunction<ServerResponse> testWhenMetricPathIsNotMeet() {
 		RouterFunction<ServerResponse> route = RouterFunctions.route(
 				RequestPredicates.path("/actuator/metrics/gateway.requests"),
@@ -191,6 +211,12 @@ public class GatewaySampleApplication {
 			this.message = message;
 		}
 
+	}
+
+	@Bean
+	@ConditionalOnEnabledFilter
+	public TimeGatewayFilterFactory addTimeGatewayFilterFactory() {
+		return new TimeGatewayFilterFactory();
 	}
 
 }

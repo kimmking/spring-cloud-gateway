@@ -2660,7 +2660,7 @@ public class MyRoutePredicateFactory extends AbstractRoutePredicateFactory<Heade
 ----
 === Writing Custom GatewayFilter Factories
 
-To write a `GatewayFilter`, you must implement `GatewayFilterFactory`.
+To write a `GatewayFilter`, you must implement `TimeGatewayFilterFactory`.
 You can extend an abstract class called `AbstractGatewayFilterFactory`.
 The following examples show how to do so:
 
@@ -2723,13 +2723,13 @@ public class PostGatewayFilterFactory extends AbstractGatewayFilterFactory<PostG
 
 ==== Naming Custom Filters And References In Configuration
 
-Custom filters class names should end in `GatewayFilterFactory`.
+Custom filters class names should end in `TimeGatewayFilterFactory`.
 
 For example, to reference a filter named `Something` in configuration files, the filter
 must be in a class named `SomethingGatewayFilterFactory`.
 
 WARNING: It is possible to create a gateway filter named without the
-`GatewayFilterFactory` suffix, such as `class AnotherThing`. This filter could be
+`TimeGatewayFilterFactory` suffix, such as `class AnotherThing`. This filter could be
 referenced as `AnotherThing` in configuration files. This is **not** a supported naming
 convention and this syntax may be removed in future releases. Please update the filter
 name to be compliant.
