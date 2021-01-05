@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.cloud.gateway.config.conditional.ConditionalOnEnabledFilter;
+import org.springframework.cloud.gateway.config.conditional.ConditionalOnEnabledPredicate;
 import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
 
@@ -217,6 +218,12 @@ public class GatewaySampleApplication {
 	@ConditionalOnEnabledFilter
 	public TimeGatewayFilterFactory addTimeGatewayFilterFactory() {
 		return new TimeGatewayFilterFactory();
+	}
+
+	@Bean
+	@ConditionalOnEnabledPredicate
+	public TokenRoutePredicateFactory addTokenRoutePredicateFactory() {
+		return new TokenRoutePredicateFactory();
 	}
 
 }

@@ -27,13 +27,22 @@ spring:
         predicates:
         - Path=/echo
       # =====================================
+      - id: token_route
+        uri: ${test.uri}
+        order: 9999
+        predicates:
+        - Path=/**
+        - Token=CC
+        filters:
+        - AddResponseHeader=KK05, token_route
+        - Time
       - id: default_path_to_httpbin
         uri: ${test.uri}
         order: 10000
         predicates:
         - Path=/**
         filters:
-        - AddResponseHeader=KK01, T20210102
+        - AddResponseHeader=KK01, default_path_to_httpbin
         - Time
 
 logging:
