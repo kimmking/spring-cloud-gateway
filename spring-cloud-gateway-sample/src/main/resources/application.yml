@@ -12,7 +12,7 @@ spring:
     gateway:
       default-filters:
       # - PrefixPath=/httpbin
-      - PrefixPath=/
+      # - PrefixPath=/
       - AddResponseHeader=X-Response-Default-Foo, Default-Bar
 
       routes:
@@ -44,6 +44,15 @@ spring:
         filters:
         - AddResponseHeader=KK01, default_path_to_httpbin
         - Time
+      - id: kk_route
+        uri: 'http://httpbin.org:80'
+        order: 9990
+        predicates:
+        - Path=/kk/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/status
+        - AddResponseHeader=KK08, kk_route
 
 logging:
   level:

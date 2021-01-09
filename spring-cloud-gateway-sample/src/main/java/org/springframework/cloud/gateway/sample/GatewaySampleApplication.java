@@ -55,7 +55,20 @@ public class GatewaySampleApplication {
 	@Bean
 	public RouteLocator getRouteLocator(RouteLocatorBuilder builder) {
 		return builder.routes().route(r -> r.path("/t/**")
-				.filters(f -> f.stripPrefix(1).filter(new TimeGatewayFilter())).uri(uri)).build();
+				.filters(f -> f.stripPrefix(1).filter(new TimeGatewayFilter())).uri(uri).order(9997).id("timefilter_java_route")).build();
+	}
+
+	@Bean
+	public RouteLocator getTokenRouteLocator(RouteLocatorBuilder builder) {
+		return builder.routes().route(r -> r.predicate(new TokenRoutePredicateFactory().apply(new TokenRoutePredicateFactory.Config().setToken("KK"))).and().path("/token/**")
+				.filters(f -> f.stripPrefix(1).filter(new TimeGatewayFilter()).addResponseHeader("KK15","token_java_route")).uri(uri).order(9998).id("token_java_route")).build();
+	}
+
+	@Bean
+	public RouteLocator getKKRouteLocator(RouteLocatorBuilder builder) {
+		return builder.routes().route(r -> r.path("/kk1/**")
+				.filters(f -> f.stripPrefix(1).prefixPath("/status").addResponseHeader("KK08","kk_route"))
+				.uri(uri).order(9990).id("kk_route")).build();
 	}
 
 	@Bean
