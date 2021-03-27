@@ -106,7 +106,7 @@ public class NettyRoutingFilter implements GlobalFilter, Ordered {
 	@SuppressWarnings("Duplicates")
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		URI requestUrl = exchange.getRequiredAttribute(GATEWAY_REQUEST_URL_ATTR);
-
+		System.out.println("NettyRouting--------------");
 		String scheme = requestUrl.getScheme();
 		if (isAlreadyRouted(exchange)
 				|| (!"http".equals(scheme) && !"https".equals(scheme))) {
