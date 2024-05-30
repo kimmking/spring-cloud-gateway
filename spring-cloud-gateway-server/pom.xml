@@ -92,11 +92,13 @@
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib</artifactId>
 			<optional>true</optional>
+			<version>1.8.22</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-reflect</artifactId>
 			<optional>true</optional>
+			<version>1.8.22</version>
 		</dependency>
 		<dependency>
 			<groupId>io.projectreactor.addons</groupId>
@@ -164,6 +166,7 @@
 				<!-- Based on instructions here - https://kotlinlang.org/docs/reference/using-maven.html -->
 				<artifactId>kotlin-maven-plugin</artifactId>
 				<groupId>org.jetbrains.kotlin</groupId>
+				<version>1.8.22</version>
 				<configuration>
 					<jvmTarget>1.8</jvmTarget>
 				</configuration>

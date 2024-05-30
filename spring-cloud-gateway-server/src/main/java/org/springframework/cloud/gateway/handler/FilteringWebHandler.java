@@ -73,6 +73,9 @@ public class FilteringWebHandler implements WebHandler {
 
 	@Override
 	public Mono<Void> handle(ServerWebExchange exchange) {
+		System.out.println(" ******* ============= ");
+		System.out.println(" ******* ============= ");
+		System.out.println(" ******* ============= ");
 		Route route = exchange.getRequiredAttribute(GATEWAY_ROUTE_ATTR);
 		List<GatewayFilter> gatewayFilters = route.getFilters();
 
